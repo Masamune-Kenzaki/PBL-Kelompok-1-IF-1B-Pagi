@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Kunjungan - E-Pustaka Polibatam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style_kunjungan.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html" class="logo"><img src="new.jpg" alt="logo E-Pustaka Polibatam"></a>
+                <h1 class="judul">E-Pustaka Polibatam</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="buku.html">Buku Digital</a></li>
+                <li><a href="kunjungan.html" class="active">Kunjungan</a></li>
+                <li><a href="masuk.html">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="kunjungan-section">
+        <div class="container">
+            <div class="form-wrapper">
+                <h2>Form Kunjungan Perpustakaan</h2>
+                <p class="form-description">Isi data diri Anda untuk mengunjungi perpustakaan</p>
+                
+                <form class="simple-form" id="kunjunganForm">
+                    <div class="input-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="nim">NIM</label>
+                        <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="prodi">Program Studi</label>
+                        <input type="text" id="prodi" name="prodi" placeholder="Masukkan program studi" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="tanggal">Tanggal Kunjungan</label>
+                        <input type="date" id="tanggal" name="tanggal" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="waktu">Waktu Kunjungan</label>
+                        <input type="time" id="waktu" name="waktu" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="keperluan">Keperluan</label>
+                        <select id="keperluan" name="keperluan" required>
+                            <option value="">Pilih keperluan</option>
+                            <option value="baca">Membaca</option>
+                            <option value="pinjam">Meminjam Buku</option>
+                            <option value="kembali">Mengembalikan Buku</option>
+                            <option value="belajar">Belajar</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Submit</button>
+                        <button type="reset" class="btn-reset">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pop-up Konfirmasi -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <div class="popup-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Data Tersimpan!</h3>
+            <p>Data kunjungan Anda telah berhasil disimpan.</p>
+            <button class="popup-btn" id="popupBtn">OK</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>E-Pustaka Polibatam</h3>
+                    <p>Perpustakaan digital Politeknik Negeri Batam yang menyediakan akses ke berbagai koleksi buku digital, jurnal, dan sumber pengetahuan lainnya.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tautan Cepat</h3>
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="buku.html">Buku Digital</a></li>
+                        <li><a href="kunjungan.html">Kunjungan</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Kontak Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Jl. Ahmad Yani, Batam Center, Batam</p>
+                    <p><i class="fas fa-phone"></i> (0778) 469858</p>
+                    <p><i class="fas fa-envelope"></i> epustaka@polibatam.ac.id</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Ikuti Kami</h3>
+                    <ul class="social-links">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 E-Pustaka Polibatam. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script_kunjungan.js"></script>
+</body>
+</html>

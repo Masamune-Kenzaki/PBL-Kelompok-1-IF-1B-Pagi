@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - E-Pustaka Polibatam</title>
+    <link rel="stylesheet" href="style_admin.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="nav-branding">E-Pustaka - Admin Panel</a>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="data_kunjungan.html" class="nav-link">Data Pengunjung</a>
+                </li>
+                <li class="nav-item">
+                    <a href="jadwal_kunjungan.html" class="nav-link">Jadwal Kunjungan</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="title">
+        <h2>Dashboard</h2>
+    </section>
+
+    <section id="dashboard" class="dashboard">
+        <div class="container">
+            <h2>Total Pengunjung</h2>
+            <div class="total">
+                <div class="total-item">
+                    <h3>Total Hari Ini</h3>
+                    <p>10</p>   
+                </div>
+                <div class="total-item">
+                    <h3>Total Bulan Ini</h3>
+                    <p>100</p>
+                </div>
+                <div class="total-item">
+                    <h3>Total Bulan Lalu</h3>
+                    <p>110</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="charts">
+        <div class="container">
+            <h2>Statistik Pengunjung</h2>
+            <div class="chart-container">
+                <canvas id="visitorChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="menu.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>

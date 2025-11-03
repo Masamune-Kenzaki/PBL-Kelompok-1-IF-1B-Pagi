@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kunjungan - E-Pustaka</title>
+    <link rel="stylesheet" href="style_admin.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="nav-branding">E-Pustaka</a>
+
+            <ul class="nav-menu">
+                <a href="#" class="nav-branding">E-Pustaka</a>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="data_kunjungan.html" class="nav-link">Data Pengunjung</a>
+                </li>
+                <li class="nav-item">
+                    <a href="jadwal_kunjungan.html" class="nav-link">Jadwal Kunjungan</a>
+                </li>
+               <li class="nav-item">
+                    <a href="#" class="nav-link logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="title">
+        <h2>Data Pengunjung</h2>
+    </section>
+
+    <section class="data-kunjungan">
+        <div class="container">
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="filterTanggal">Filter Tanggal:</label>
+                    <input type="date" id="filterTanggal">
+                </div>
+                <div class="filter-group">
+                    <label for="filterStatus">Filter Status:</label>
+                    <select id="filterStatus">
+                        <option value="semua">Semua</option>
+                        <option value="mahasiswa">Mahasiswa</option>
+                        <option value="dosen">Dosen</option>
+                        <option value="umum">Umum</option>
+                    </select>
+                </div>
+                <button id="btnFilter" class="btn-primary">Terapkan Filter</button>
+                <button id="btnReset" class="btn-secondary">Reset</button>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Status</th>
+                            <th>Tanggal Kunjungan</th>
+                            <th>Waktu Masuk</th>
+                            <th>Waktu Keluar</th>
+                            <th>Keperluan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button id="prevPage" class="btn-pagination">Sebelumnya</button>
+                <span id="pageInfo">Halaman 1 dari 1</span>
+                <button id="nextPage" class="btn-pagination">Selanjutnya</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="menu.js"></script>
+    <script src="data_kunjungan.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
