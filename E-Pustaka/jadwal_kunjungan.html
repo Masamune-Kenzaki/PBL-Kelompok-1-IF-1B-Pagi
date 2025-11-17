@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Kunjungan - E-Pustaka</title>
+    <link rel="stylesheet" href="style_admin.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="nav-branding">E-Pustaka</a>
+
+            <ul class="nav-menu">
+                <a href="#" class="nav-branding">E-Pustaka</a>
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="data_kunjungan.html" class="nav-link">Data Pengunjung</a>
+                </li>
+                <li class="nav-item">
+                    <a href="jadwal_kunjungan.html" class="nav-link">Jadwal Kunjungan</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Keluar
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="title">
+        <h2>Jadwal Kunjungan</h2>
+    </section>
+
+    <section class="jadwal-kunjungan">
+        <div class="container">
+            <!-- Filter dan Pencarian -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="filterTanggal">Filter Tanggal:</label>
+                    <input type="date" id="filterTanggal">
+                </div>
+                <div class="filter-group">
+                    <label for="filterStatus">Filter Status:</label>
+                    <select id="filterStatus">
+                        <option value="semua">Semua Status</option>
+                        <option value="terjadwal">Terjadwal</option>
+                        <option value="berlangsung">Berlangsung</option>
+                        <option value="selesai">Selesai</option>
+                        <option value="dibatalkan">Dibatalkan</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="searchInput">Cari:</label>
+                    <input type="text" id="searchInput" placeholder="Cari nama, NIM, atau instansi...">
+                </div>
+                <button id="btnFilter" class="btn-primary">Terapkan Filter</button>
+                <button id="btnReset" class="btn-secondary">Reset</button>
+            </div>
+
+            <!-- Statistik Cepat -->
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>Kunjungan Hari Ini</h3>
+                        <p class="stat-number">8</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-info">
+                        <h3>Sedang Berlangsung</h3>
+                        <p class="stat-number">3</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <h3>Kunjungan Besok</h3>
+                        <p class="stat-number">12</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Jadwal -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Instansi</th>
+                            <th>Tanggal</th>
+                            <th>Waktu</th>
+                            <th>Keperluan</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button id="prevPage" class="btn-pagination">Sebelumnya</button>
+                <span id="pageInfo">Halaman 1 dari 1</span>
+                <button id="nextPage" class="btn-pagination">Selanjutnya</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="menu.js"></script>
+    <script src="jadwal_kunjungan.js"></script>
+    <script src="login.js"></script>
+</body>
+</html>
