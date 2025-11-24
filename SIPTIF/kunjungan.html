@@ -38,22 +38,6 @@
                         <input type="email" id="email" name="email" placeholder="Masukkan email" required>
                     </div>
                     
-                    <!-- Tambahkan field ini setelah input email -->
-                    <div class="input-group">
-                        <label for="status">Status</label>
-                        <select id="status" name="status" required onchange="toggleNIM()">
-                            <option value="">Pilih Status</option>
-                            <option value="Mahasiswa">Mahasiswa</option>
-                            <option value="Dosen">Dosen</option>
-                            <option value="Umum">Umum</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group" id="nimGroup" style="display: none;">
-                        <label for="nim">NIM/NIDN</label>
-                        <input type="text" id="nim" name="nim" placeholder="Masukkan NIM atau NIDN">
-                    </div>
-                    
                     <div class="input-group">
                         <label for="tanggal">Tanggal Kunjungan</label>
                         <input type="date" id="tanggal" name="tanggal" required>
@@ -68,11 +52,11 @@
                         <label for="keperluan">Keperluan</label>
                         <select id="keperluan" name="keperluan" required>
                             <option value="">Pilih keperluan</option>
-                            <option value="baca">Meminjam Ruangan</option>
-                            <option value="pinjam">Mengunjungi Perpustakaan</option>
-                            <option value="kembali">Meminjam Kunci Ruangan</option>
-                            <option value="belajar">Borang alat</option>
-                            <option value="lainnya">Lainnya</option>
+                            <option value="Meminjam Ruangan">Meminjam Ruangan</option>
+                            <option value="Mengunjungi Perpustakaan">Mengunjungi Perpustakaan</option>
+                            <option value="Meminjam Kunci Ruangan">Meminjam Kunci Ruangan</option>
+                            <option value="Meminjam Alat">Meminjam Alat</option>
+                            <option value="Lainnya">Lainnya</option>
                         </select>
                     </div>
                     

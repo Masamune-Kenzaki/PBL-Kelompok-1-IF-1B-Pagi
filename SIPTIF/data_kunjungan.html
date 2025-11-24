@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Kunjungan - SIPTIF Polibatam</title>
-    <title>Data Kunjungan - SIPTIF</title>
     <link rel="stylesheet" href="style_admin.css">
 </head>
 <body>
@@ -13,11 +12,6 @@
             <a href="#" class="nav-branding">SIPTIF Polibatam</a>
 
             <ul class="nav-menu">
-                <a href="#" class="nav-branding">SIPTIF Polibatam</a>
-            <a href="#" class="nav-branding">SIPTIF</a>
-
-            <ul class="nav-menu">
-                <a href="#" class="nav-branding">SIPTIF</a>
                 <li class="nav-item">
                     <a href="admin.html" class="nav-link">Dashboard</a>
                 </li>
@@ -53,15 +47,6 @@
                     <label for="filterTanggal">Filter Tanggal:</label>
                     <input type="date" id="filterTanggal">
                 </div>
-                <div class="filter-group">
-                    <label for="filterStatus">Filter Status:</label>
-                    <select id="filterStatus">
-                        <option value="semua">Semua</option>
-                        <option value="mahasiswa">Mahasiswa</option>
-                        <option value="dosen">Dosen</option>
-                        <option value="umum">Keluar</option>
-                    </select>
-                </div>
                 <button id="btnFilter" class="btn-primary">Terapkan Filter</button>
                 <button id="btnReset" class="btn-secondary">Reset</button>
             </div>
@@ -72,9 +57,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>NIM</th>
                             <th>Nama</th>
-                            <th>Status</th>
+                            <th>Email</th>
                             <th>Tanggal Kunjungan</th>
                             <th>Waktu Masuk</th>
                             <th>Waktu Keluar</th>

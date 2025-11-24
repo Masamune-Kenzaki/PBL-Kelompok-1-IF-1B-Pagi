@@ -25,7 +25,7 @@ function renderTable(data, page = 1) {
     tableBody.innerHTML = '';
     
     if (pageData.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">Tidak ada data yang ditemukan</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Tidak ada data yang ditemukan</td></tr>';
         return;
     }
     
@@ -33,9 +33,8 @@ function renderTable(data, page = 1) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${startIndex + index + 1}</td>
-            <td>${item.nim}</td>
             <td>${item.nama}</td>
-            <td>${item.status}</td>
+            <td>${item.email}</td>
             <td>${formatTanggal(item.tanggal)}</td>
             <td>${item.masuk}</td>
             <td>${item.keluar || '-'}</td>
@@ -69,13 +68,10 @@ function formatTanggal(tanggal) {
 // Fungsi untuk menerapkan filter
 function applyFilter() {
     const filterTanggal = document.getElementById('filterTanggal').value;
-    const filterStatus = document.getElementById('filterStatus').value;
     
     filteredData = filteredData.filter(item => {
         const matchTanggal = !filterTanggal || item.tanggal === filterTanggal;
-        const matchStatus = filterStatus === 'semua' || item.status === filterStatus;
-        
-        return matchTanggal && matchStatus;
+        return matchTanggal;
     });
     
     currentPage = 1;
@@ -85,7 +81,6 @@ function applyFilter() {
 // Fungsi untuk mereset filter
 function resetFilter() {
     document.getElementById('filterTanggal').value = '';
-    document.getElementById('filterStatus').value = 'semua';
     
     currentPage = 1;
     loadData();

@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 include 'db_config.php';
 
-$sql = "SELECT * FROM kunjungan ORDER BY tanggal DESC, masuk DESC";
+$sql = "SELECT * FROM data_kunjungan ORDER BY tanggal DESC, masuk DESC";
 $result = mysqli_query($conn, $sql);
 
 $data = [];
