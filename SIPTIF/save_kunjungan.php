@@ -3,22 +3,25 @@ header('Content-Type: application/json');
 include 'db_config.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Debug: lihat data yang diterima
-    error_log("Data POST: " . print_r($_POST, true));
     
+    // Ambil data dari POST
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
-    $masuk = mysqli_real_escape_string($conn, $_POST['waktu']); // Perbaikan: ambil dari 'waktu'
+    $masuk = mysqli_real_escape_string($conn, $_POST['waktu']);
     $keperluan = mysqli_real_escape_string($conn, $_POST['keperluan']);
+    $keluar = NULL; // Default NULL untuk waktu keluar
     
-    // Debug data
-    error_log("Nama: $nama, Email: $email, Tanggal: $tanggal, Masuk: $masuk, Keperluan: $keperluan");
+    // Debug log
+    error_log("Data diterima - Nama: $nama, Email: $email, Tanggal: $tanggal, Masuk: $masuk, Keperluan: $keperluan");
     
-    // Set waktu keluar default (null untuk sementara)
-    $keluar = null;
+    // Validasi data wajib
+    if (empty($nama) || empty($email) || empty($tanggal) || empty($masuk) || empty($keperluan)) {
+        echo json_encode(['success' => false, 'message' => 'Semua field wajib diisi']);
+        exit;
+    }
     
-    // Pastikan nama tabel sesuai
+    // Query INSERT
     $sql = "INSERT INTO data_kunjungan (nama, email, tanggal, masuk, keluar, keperluan) 
             VALUES (?, ?, ?, ?, ?, ?)";
     
@@ -30,15 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => true, 'message' => 'Data berhasil disimpan']);
         } else {
             $error = mysqli_error($conn);
-            error_log("Error execute: " . $error);
+            error_log("MySQL Error: " . $error);
             echo json_encode(['success' => false, 'message' => 'Gagal menyimpan data: ' . $error]);
         }
         
         mysqli_stmt_close($stmt);
     } else {
         $error = mysqli_error($conn);
-        error_log("Error prepare: " . $error);
-        echo json_encode(['success' => false, 'message' => 'Gagal mempersiapkan query: ' . $error]);
+        error_log("Prepare Error: " . $error);
+        echo json_encode(['success' => false, 'message' => 'Error database: ' . $error]);
     }
     
     mysqli_close($conn);
