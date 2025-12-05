@@ -1,252 +1,149 @@
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded - Script kunjungan berjalan');
+// script_kunjungan.js - Versi Ringan dan Cepat
+(function() {
+    'use strict';
     
-    const form = document.getElementById('kunjunganForm');
-    const popupOverlay = document.getElementById('popupOverlay');
-    const popupBtn = document.getElementById('popupBtn');
+    // Mode development (false untuk production)
+    const DEBUG_MODE = false;
     
-    // Debug elements
-    console.log('Form element:', form);
-    console.log('Popup overlay:', popupOverlay);
-    console.log('Popup button:', popupBtn);
+    // Cache DOM elements
+    let form, popupOverlay, popupBtn;
     
-    // Validasi elemen penting
-    if (!form) {
-        console.error('❌ Form dengan ID kunjunganForm tidak ditemukan!');
-        alert('Error: Form tidak ditemukan. Periksa konsol untuk detail.');
-        return;
+    document.addEventListener('DOMContentLoaded', init);
+    
+    function init() {
+        // Get elements
+        form = document.getElementById('kunjunganForm');
+        popupOverlay = document.getElementById('popupOverlay');
+        popupBtn = document.getElementById('popupBtn');
+        
+        // Validasi elemen
+        if (!form || !popupOverlay) {
+            if (DEBUG_MODE) console.error('Elemen penting tidak ditemukan');
+            return;
+        }
+        
+        // Setup defaults
+        setupDefaults();
+        
+        // Setup event listeners
+        setupEvents();
+        
+        if (DEBUG_MODE) console.log('✅ Aplikasi siap');
     }
     
-    if (!popupOverlay) {
-        console.error('❌ Popup overlay dengan ID popupOverlay tidak ditemukan!');
-        alert('Error: Popup overlay tidak ditemukan.');
-        return;
+    function setupDefaults() {
+        // Tanggal default (hari ini)
+        const today = new Date();
+        const dateStr = today.toISOString().split('T')[0];
+        
+        // Waktu default (jam sekarang + 1 jam)
+        const nextHour = new Date(today.getTime() + 60 * 60 * 1000);
+        const timeStr = `${String(nextHour.getHours()).padStart(2, '0')}:${String(nextHour.getMinutes()).padStart(2, '0')}`;
+        
+        document.getElementById('tanggal').value = dateStr;
+        document.getElementById('tanggal').setAttribute('min', dateStr);
+        document.getElementById('waktu').value = timeStr;
     }
-
-    if (!popupBtn) {
-        console.error('❌ Popup button dengan ID popupBtn tidak ditemukan!');
+    
+    function setupEvents() {
+        // Form submission
+        form.addEventListener('submit', handleFormSubmit);
+        
+        // Popup close
+        if (popupBtn) {
+            popupBtn.addEventListener('click', hidePopup);
+        }
+        
+        // Close popup on overlay click
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === popupOverlay) hidePopup();
+        });
+        
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
+                hidePopup();
+            }
+        });
     }
-
-    console.log('✅ Semua elemen utama ditemukan');
-
-    // 1. Tangani submit form
-    form.addEventListener('submit', function(e) {
+    
+    async function handleFormSubmit(e) {
         e.preventDefault();
-        console.log('📝 Form submitted');
         
-        if (validateForm()) {
-            console.log('✅ Form valid, memproses data...');
-            submitFormData();
-        } else {
-            console.log('❌ Form tidak valid');
+        // Validasi cepat
+        if (!validateQuick()) return;
+        
+        // Disable submit button
+        const submitBtn = form.querySelector('.btn-submit');
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Menyimpan...';
+        submitBtn.disabled = true;
+        
+        try {
+            // Kirim data
+            const response = await fetch('save_kunjungan.php', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showPopup();
+                form.reset();
+                setupDefaults(); // Reset ke nilai default
+            } else {
+                alert('⚠️ ' + (result.message || 'Gagal menyimpan data'));
+            }
+        } catch (error) {
+            if (DEBUG_MODE) console.error('Fetch error:', error);
+            alert('❌ Gagal terhubung ke server');
+        } finally {
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
         }
-    });
-    
-    // 2. Handler untuk tombol popup
-    if (popupBtn) {
-        popupBtn.addEventListener('click', function() {
-            console.log('🔘 Popup button clicked');
-            closePopup();
-        });
     }
     
-    // 3. Handler untuk klik di luar popup
-    popupOverlay.addEventListener('click', function(e) {
-        if (e.target === popupOverlay) {
-            console.log('🎯 Klik di luar popup');
-            closePopup();
-        }
-    });
-    
-    // 4. Handler untuk ESC key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && popupOverlay.classList.contains('active')) {
-            console.log('⌨️ ESC key pressed');
-            closePopup();
-        }
-    });
-    
-    // Fungsi untuk menutup popup
-    function closePopup() {
-        console.log('🗂️ Menutup popup');
-        popupOverlay.classList.remove('active');
-        // Reset form setelah popup ditutup
-        setTimeout(() => {
-            form.reset();
-            setDefaultDate(); // Set ulang tanggal default
-            console.log('🔄 Form direset');
-        }, 300);
-    }
-    
-    // Fungsi validasi form
-    function validateForm() {
+    function validateQuick() {
+        // Validasi nama
         const nama = document.getElementById('nama').value.trim();
+        if (nama.length < 2) {
+            alert('❌ Nama minimal 2 karakter');
+            return false;
+        }
+        
+        // Validasi email sederhana
         const email = document.getElementById('email').value.trim();
-        const tanggal = document.getElementById('tanggal').value;
-        const waktu = document.getElementById('waktu').value;
+        if (!email.includes('@') || !email.includes('.')) {
+            alert('❌ Email tidak valid');
+            return false;
+        }
+        
+        // Validasi keperluan
         const keperluan = document.getElementById('keperluan').value;
-        
-        console.log('🔍 Validating form data:', { 
-            nama: nama.substring(0, 10) + '...', 
-            email, 
-            tanggal, 
-            waktu, 
-            keperluan 
-        });
-        
-        // Validasi field kosong
-        if (nama === '' || email === '' || tanggal === '' || waktu === '' || keperluan === '') {
-            showAlert('Harap lengkapi semua field yang wajib diisi!', 'error');
+        if (!keperluan) {
+            alert('❌ Pilih keperluan kunjungan');
             return false;
         }
         
-        // Validasi email
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            showAlert('Format email tidak valid! Contoh: email@domain.com', 'error');
-            return false;
-        }
-        
-        // Validasi tanggal tidak boleh kurang dari hari ini
-        const today = new Date().toISOString().split('T')[0];
-        if (tanggal < today) {
-            showAlert('Tanggal kunjungan tidak boleh kurang dari hari ini!', 'error');
-            return false;
-        }
-        
-        console.log('✅ Semua validasi passed');
         return true;
     }
     
-    // Fungsi untuk menampilkan alert
-    function showAlert(message, type = 'info') {
-        alert(message); // Bisa diganti dengan custom alert yang lebih baik
-    }
-    
-    // Fungsi untuk submit data ke PHP
-    function submitFormData() {
-        const submitBtn = form.querySelector('.btn-submit');
-        const originalText = submitBtn.textContent;
-        
-        // Update button state
-        submitBtn.textContent = 'Menyimpan...';
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.7';
-        submitBtn.style.cursor = 'not-allowed';
-        
-        const formData = new FormData(form);
-        
-        // Debug: log data yang akan dikirim
-        console.log('📤 Data yang dikirim ke server:');
-        for (let [key, value] of formData.entries()) {
-            console.log(`   ${key}: ${value}`);
-        }
-        
-        // Kirim data ke server
-        fetch('save_kunjungan.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            console.log('📥 Response status:', response.status);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('📨 Response data dari server:', data);
-            
-            if (data.success) {
-                console.log('🎉 Data berhasil disimpan, menampilkan popup');
-                
-                // Tampilkan popup sukses
-                showSuccessPopup();
-                
-            } else {
-                console.error('❌ Server mengembalikan error:', data.message);
-                showAlert('Gagal menyimpan data: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('💥 Fetch error:', error);
-            showAlert('Terjadi kesalahan jaringan. Periksa koneksi internet Anda.', 'error');
-        })
-        .finally(() => {
-            // Reset button state
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = '1';
-            submitBtn.style.cursor = 'pointer';
-            console.log('🔄 Button state direset');
-        });
-    }
-    
-    // Fungsi untuk menampilkan popup sukses
-    function showSuccessPopup() {
-        console.log('🪟 Menampilkan popup sukses');
-        
-        // Animasi masuk popup
+    function showPopup() {
         popupOverlay.classList.add('active');
-        
-        // Auto close setelah 5 detik (opsional)
-        setTimeout(() => {
-            if (popupOverlay.classList.contains('active')) {
-                console.log('⏰ Auto close popup');
-                closePopup();
-            }
-        }, 5000);
+        // Auto hide setelah 2.5 detik
+        setTimeout(hidePopup, 2500);
     }
     
-    // Fungsi untuk set tanggal default
-    function setDefaultDate() {
-        const today = new Date().toISOString().split('T')[0];
-        const tanggalInput = document.getElementById('tanggal');
-        
-        if (tanggalInput) {
-            tanggalInput.setAttribute('min', today);
-            tanggalInput.value = today;
-            console.log('📅 Tanggal di-set ke:', today);
-        }
+    function hidePopup() {
+        popupOverlay.classList.remove('active');
     }
     
-    // Inisialisasi saat halaman dimuat
-    function initializePage() {
-        setDefaultDate();
-        
-        // Set waktu default ke jam sekarang
-        const now = new Date();
-        const waktuInput = document.getElementById('waktu');
-        if (waktuInput) {
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            waktuInput.value = `${hours}:${minutes}`;
-            console.log('⏰ Waktu di-set ke:', waktuInput.value);
-        }
-        
-        console.log('🚀 Halaman siap digunakan');
+    // Nonaktifkan console.log di production
+    if (!DEBUG_MODE) {
+        console.log = function() {};
+        console.error = function() {};
+        console.warn = function() {};
     }
-    
-    // Jalankan inisialisasi
-    initializePage();
-    
-    // Tambahkan style untuk button loading (opsional)
-    const style = document.createElement('style');
-    style.textContent = `
-        .btn-submit:disabled {
-            opacity: 0.7 !important;
-            cursor: not-allowed !important;
-        }
-        
-        /* Animasi untuk popup */
-        @keyframes popupFadeIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .popup-overlay.active .popup {
-            animation: popupFadeIn 0.3s ease-out;
-        }
-    `;
-    document.head.appendChild(style);
-});
+})();

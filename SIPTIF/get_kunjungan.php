@@ -1,5 +1,8 @@
 <?php
+// get_kunjungan.php
 header('Content-Type: application/json');
+header('Cache-Control: no-cache, must-revalidate');
+
 include 'db_config.php';
 
 $sql = "SELECT * FROM data_kunjungan ORDER BY tanggal DESC, masuk DESC";

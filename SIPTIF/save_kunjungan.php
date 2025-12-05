@@ -1,51 +1,63 @@
 <?php
+// save_kunjungan.php
 header('Content-Type: application/json');
-include 'db_config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Response minimal
+$response = ['success' => false, 'message' => ''];
+
+try {
+    // Koneksi database langsung (lebih cepat)
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "siptif_db";
     
-    // Ambil data dari POST
-    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
-    $masuk = mysqli_real_escape_string($conn, $_POST['waktu']);
-    $keperluan = mysqli_real_escape_string($conn, $_POST['keperluan']);
-    $keluar = NULL; // Default NULL untuk waktu keluar
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
     
-    // Debug log
-    error_log("Data diterima - Nama: $nama, Email: $email, Tanggal: $tanggal, Masuk: $masuk, Keperluan: $keperluan");
+    if (!$conn) {
+        throw new Exception("Koneksi database gagal");
+    }
     
-    // Validasi data wajib
-    if (empty($nama) || empty($email) || empty($tanggal) || empty($masuk) || empty($keperluan)) {
-        echo json_encode(['success' => false, 'message' => 'Semua field wajib diisi']);
+    // Ambil data POST
+    $nama = $_POST['nama'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $tanggal = $_POST['tanggal'] ?? date('Y-m-d');
+    $masuk = $_POST['waktu'] ?? date('H:i:s');
+    $keperluan = $_POST['keperluan'] ?? '';
+    
+    // Validasi cepat
+    if (strlen($nama) < 2 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $response['message'] = 'Nama atau email tidak valid';
+        echo json_encode($response);
         exit;
     }
     
-    // Query INSERT
-    $sql = "INSERT INTO data_kunjungan (nama, email, tanggal, masuk, keluar, keperluan) 
-            VALUES (?, ?, ?, ?, ?, ?)";
+    // Escape input untuk keamanan
+    $nama = mysqli_real_escape_string($conn, trim($nama));
+    $email = mysqli_real_escape_string($conn, trim($email));
+    $tanggal = mysqli_real_escape_string($conn, $tanggal);
+    $masuk = mysqli_real_escape_string($conn, $masuk);
+    $keperluan = mysqli_real_escape_string($conn, trim($keperluan));
     
-    $stmt = mysqli_prepare($conn, $sql);
-    if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "ssssss", $nama, $email, $tanggal, $masuk, $keluar, $keperluan);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            echo json_encode(['success' => true, 'message' => 'Data berhasil disimpan']);
-        } else {
-            $error = mysqli_error($conn);
-            error_log("MySQL Error: " . $error);
-            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan data: ' . $error]);
-        }
-        
-        mysqli_stmt_close($stmt);
+    // Query INSERT langsung
+    $sql = "INSERT INTO data_kunjungan 
+            (nama, email, tanggal, masuk, keperluan, created_at) 
+            VALUES 
+            ('$nama', '$email', '$tanggal', '$masuk', '$keperluan', NOW())";
+    
+    if (mysqli_query($conn, $sql)) {
+        $response['success'] = true;
+        $response['message'] = 'Data berhasil disimpan';
     } else {
-        $error = mysqli_error($conn);
-        error_log("Prepare Error: " . $error);
-        echo json_encode(['success' => false, 'message' => 'Error database: ' . $error]);
+        $response['message'] = 'Gagal menyimpan ke database';
     }
     
     mysqli_close($conn);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Method tidak diizinkan']);
+    
+} catch (Exception $e) {
+    $response['message'] = 'Terjadi kesalahan sistem';
 }
+
+echo json_encode($response);
+exit;
 ?>
