@@ -317,6 +317,13 @@ a {
 .btn-secondary:hover {
     background-color: #e0e0e0;
 }
+.btn.btn-success {
+    background-color: #1976D2;
+    color: white;
+}
+.btn.btn-success:hover {
+    background-color: #1565C0;
+}
 
 .table-container {
     background-color: white;
@@ -706,5 +713,235 @@ a {
     .pagination {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+/* TAMBAHAN UNTUK FITUR FILTER */
+.filter-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.filter-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.filter-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.data-summary {
+    background-color: #e3f2fd;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border-left: 4px solid #1976D2;
+    font-size: 0.9rem;
+    color: #1565C0;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+}
+
+.btn-export {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #555;
+    transition: all 0.3s;
+}
+
+.btn-export:hover {
+    background-color: #f5f5f5;
+    border-color: #1976D2;
+    color: #1976D2;
+}
+
+/* Filter Tags */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 4px solid #1976D2;
+}
+
+.filter-tag {
+    background-color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid #1976D2;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #1976D2;
+}
+
+.filter-tag .remove-filter {
+    cursor: pointer;
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 1rem;
+}
+
+.filter-stats {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #6c757d;
+    padding: 0 5px;
+}
+
+/* Table Badges */
+.time-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #e3f2fd;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #1565c0;
+}
+
+.time-badge.success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.time-badge.warning {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
+.keperluan-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: #f3e5f5;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #7b1fa2;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-edit, .btn-delete {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-edit {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.btn-edit:hover {
+    background-color: #bbdefb;
+}
+
+.btn-delete {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.btn-delete:hover {
+    background-color: #ffcdd2;
+}
+
+/* Toast Notification */
+#custom-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+}
+
+/* Responsive for filter */
+@media (max-width: 768px) {
+    .filter-row {
+        flex-direction: column;
+    }
+    
+    .filter-col {
+        min-width: 100%;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+    }
+    
+    .export-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-export {
+        justify-content: center;
     }
 }
