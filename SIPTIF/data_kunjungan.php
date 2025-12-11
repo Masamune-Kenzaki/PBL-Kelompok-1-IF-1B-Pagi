@@ -313,7 +313,7 @@ if (isset($_GET['delete_error'])) {
         <a href="admin.php" class="nav-branding">
             <i class="fas fa-book-reader"></i> SIPTIF Polibatam
         </a>
-        
+
         <ul class="nav-menu">
             <li class="nav-item">
                 <a href="admin.php" class="nav-link <?php echo $current_page == 'admin.php' ? 'active' : ''; ?>">
@@ -347,7 +347,7 @@ if (isset($_GET['delete_error'])) {
 
 <section class="title">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-        <h2><i class="fas fa-users"></i> Data Kunjungan Perpustakaan</h2>
+        <h2><i class="fas fa-users"></i> Data Kunjungan Tata Usaha</h2>
         <div class="total-badge">
             <i class="fas fa-database"></i>
             <span><?php echo $total_data; ?> Data</span>

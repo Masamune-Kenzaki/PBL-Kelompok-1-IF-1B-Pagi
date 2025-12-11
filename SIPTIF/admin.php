@@ -84,8 +84,8 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - SIPTIF Polibatam</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style_admin.css">
+    <link rel="stylesheet" href="CSS/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="CSS/style_admin.css">
     <style>
         .dashboard-stats {
             display: grid;
@@ -218,7 +218,7 @@ mysqli_close($conn);
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="tambah_data_kunjungan.html" class="nav-link">
+                    <a href="tambah_data_kunjungan.php" class="nav-link">
                         <i class="fas fa-plus-circle"></i> Tambah Data
                     </a>
                 </li>

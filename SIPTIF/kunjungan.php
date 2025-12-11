@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h1 class="judul">SIPTIF Polibatam</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.php">Beranda</a></li>
+                <li><a href="index.html">Beranda</a></li>
                 <li><a href="kunjungan.php" class="active">Kunjungan</a></li>
             </ul>
         </div>
@@ -221,8 +221,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <section class="kunjungan-section">
         <div class="container">
             <div class="form-wrapper">
-                <h2>Form Kunjungan Perpustakaan</h2>
-                <p class="form-description">Isi data diri Anda untuk mengunjungi perpustakaan</p>
+                <h2>Form Kunjungan SIPTIF</h2>
+                <p class="form-description">Isi data diri Anda untuk mengunjungi Tata Usaha</p>
                 
                 <form class="simple-form" id="kunjunganForm">
                     <div class="input-group">
