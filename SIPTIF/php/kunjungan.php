@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Kunjungan - SIPTIF Polibatam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="CSS/style_kunjungan.css">
+    <link rel="stylesheet" href="../css/style_kunjungan.css">
     <style>
         /* Inline CSS untuk performa */
         body { 
@@ -200,6 +200,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         @keyframes spin {
             to { transform: translate(-50%, -50%) rotate(360deg); }
         }
+        /* Tombol */
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-submit,
+        .btn-reset {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Tombol Simpan */
+        .btn-submit {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.35);
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #2980b9, #1f6fb2);
+            transform: translateY(-2px);
+        }
+
+        /* Tombol Reset */
+        .btn-reset {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #3498db;
+        }
+
+        .btn-reset:hover {
+            background: #3498db;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Disabled / loading */
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -207,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="container">
             <div class="nav-brand">
                 <a href="index.php" class="logo">
-                    <img src="siptif.png" alt="logo SIPTIF Polibatam" width="40" height="40">
+                    <img src="../png/siptif.png" alt="logo SIPTIF Polibatam" width="40" height="40">
                 </a>
                 <h1 class="judul">SIPTIF Polibatam</h1>
             </div>
@@ -548,6 +597,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     });
     </script>
+    <script src="../js/admin.js"></script>
 </body>
 </html>
 <?php
