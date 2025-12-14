@@ -84,8 +84,8 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - SIPTIF Polibatam</title>
-    <link rel="stylesheet" href="CSS/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="CSS/style_admin.css">
+    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/style_admin.css">
     <style>
         .dashboard-stats {
             display: grid;
