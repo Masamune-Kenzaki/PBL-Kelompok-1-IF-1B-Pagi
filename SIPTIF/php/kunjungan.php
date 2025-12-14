@@ -255,13 +255,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <a href="index.php" class="logo">
+                <a href="index.html" class="logo">
                     <img src="../png/siptif.png" alt="logo SIPTIF Polibatam" width="40" height="40">
                 </a>
                 <h1 class="judul">SIPTIF Polibatam</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Beranda</a></li>
+                <li><a href="../index.html">Beranda</a></li>
                 <li><a href="kunjungan.php" class="active">Kunjungan</a></li>
             </ul>
         </div>
