@@ -84,8 +84,8 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - SIPTIF Polibatam</title>
-    <link rel="stylesheet" href="css/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="css/style_admin.css">
+    <link rel="stylesheet" href="CSS/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="CSS/style_admin.css">
     <style>
         .dashboard-stats {
             display: grid;
@@ -197,79 +197,6 @@ mysqli_close($conn);
             
             .chart-container {
                 height: 300px;
-            }
-        }
-        
-        /* Hamburger default (desktop) */
-        .hamburger {
-            display: block !important;
-            cursor: pointer;
-            z-index: 9999;
-        }
-
-        /* Garis hamburger */
-        .hamburger .bar {
-            display: block;
-            width: 28px;
-            height: 4px;
-            margin: 6px auto;
-            background-color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        /* MOBILE MODE */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-
-            .nav-menu {
-                position: fixed;
-                left: -100%;
-                top: 70px;
-                flex-direction: column;
-                background-color: #1976D2;
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                z-index: 1000;
-            }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .nav-item {
-            margin: 16px 0;
-            }
-        }
-        /* Nav */
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: flex !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-                position: fixed !important;
-                top: 60px !important;
-                left: -100% !important;
-                width: 100% !important;
-                height: calc(100vh - 60px) !important;
-                background: #1976D2 !important;
-                z-index: 99999 !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: flex-start !important;
-                padding-top: 30px !important;
-            }
-
-            .nav-menu.active {
-                left: 0 !important;
             }
         }
     </style>
@@ -512,7 +439,5 @@ mysqli_close($conn);
             navMenu.classList.remove("active");
         }));
     </script>
-    <script src="js/menu.js"></script>
-    <script src="js/script.js"></script>
 </body>
 </html>
