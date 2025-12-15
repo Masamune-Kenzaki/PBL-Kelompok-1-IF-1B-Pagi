@@ -106,12 +106,13 @@ function setupFilterUI() {
                     <label class="filter-label" for="filterKeperluan">
                         <i class="fas fa-tasks"></i> Keperluan
                     </label>
+                    // Di dalam setupFilterUI atau bagian filter
                     <select class="filter-input" id="filterKeperluan">
                         <option value="">Semua Keperluan</option>
                         <option value="Meminjam Ruangan">Meminjam Ruangan</option>
-                        <option value="Mengunjungi Perpustakaan">Mengunjungi Perpustakaan</option>
+                        <option value="Menemui Wali Dosen">Menemui Wali Dosen</option>
                         <option value="Meminjam Alat">Meminjam Alat</option>
-                        <option value="Meminjam Buku">Meminjam Buku</option>
+                        <option value="Menemui Staff TU">Menemui Staff TU</option>
                         <option value="Meminjam Kunci Ruangan">Meminjam Kunci Ruangan</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>

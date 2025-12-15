@@ -466,12 +466,13 @@ if (isset($_GET['delete_error'])) {
                 <label for="filterKeperluan">
                     <i class="fas fa-filter"></i> Filter Keperluan:
                 </label>
+                <!-- Di dalam filter section, ubah opsi keperluan -->
                 <select id="filterKeperluan" class="filter-input">
                     <option value="">Semua Keperluan</option>
                     <option value="Meminjam Ruangan" <?php echo $filter_keperluan == 'Meminjam Ruangan' ? 'selected' : ''; ?>>Meminjam Ruangan</option>
-                    <option value="Mengunjungi Perpustakaan" <?php echo $filter_keperluan == 'Mengunjungi Perpustakaan' ? 'selected' : ''; ?>>Mengunjungi Perpustakaan</option>
+                    <option value="Menemui Wali Dosen" <?php echo $filter_keperluan == 'Menemui Wali Dosen' ? 'selected' : ''; ?>>Menemui Wali Dosen</option>
                     <option value="Meminjam Alat" <?php echo $filter_keperluan == 'Meminjam Alat' ? 'selected' : ''; ?>>Meminjam Alat</option>
-                    <option value="Meminjam Buku" <?php echo $filter_keperluan == 'Meminjam Buku' ? 'selected' : ''; ?>>Meminjam Buku</option>
+                    <option value="Menemui Staff TU" <?php echo $filter_keperluan == 'Menemui Staff TU' ? 'selected' : ''; ?>>Menemui Staff TU</option>
                     <option value="Meminjam Kunci Ruangan" <?php echo $filter_keperluan == 'Meminjam Kunci Ruangan' ? 'selected' : ''; ?>>Meminjam Kunci Ruangan</option>
                     <option value="Lainnya" <?php echo $filter_keperluan == 'Lainnya' ? 'selected' : ''; ?>>Lainnya</option>
                 </select>
@@ -676,12 +677,13 @@ if (isset($_GET['delete_error'])) {
                         <label for="edit-keperluan" class="form-label">
                             <i class="fas fa-tasks"></i> Keperluan
                         </label>
+                        <!-- Di dalam modal edit, ubah opsi keperluan -->
                         <select class="form-control" id="edit-keperluan" name="keperluan" required onchange="toggleEditOtherInput()">
                             <option value="">Pilih keperluan</option>
                             <option value="Meminjam Ruangan">Meminjam Ruangan</option>
-                            <option value="Mengunjungi Perpustakaan">Mengunjungi Perpustakaan</option>
+                            <option value="Menemui Wali Dosen">Menemui Wali Dosen</option>
                             <option value="Meminjam Alat">Meminjam Alat</option>
-                            <option value="Meminjam Buku">Meminjam Buku</option>
+                            <option value="Menemui Staff TU">Menemui Staff TU</option>
                             <option value="Meminjam Kunci Ruangan">Meminjam Kunci Ruangan</option>
                             <option value="Lainnya">Lainnya</option>
                         </select>
