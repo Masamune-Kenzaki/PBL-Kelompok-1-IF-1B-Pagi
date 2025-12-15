@@ -280,7 +280,7 @@ if (isset($_GET['delete_error'])) {
                 max-width: none;
             }
         }
-                /* Hamburger default (desktop) */
+        /* Hamburger default (desktop) */
         .hamburger {
             display: block !important;
             cursor: pointer;
