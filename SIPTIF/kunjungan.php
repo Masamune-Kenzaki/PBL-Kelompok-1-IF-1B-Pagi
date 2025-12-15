@@ -44,11 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-family: 'Segoe UI', Arial, sans-serif; 
             background: #f5f7fa;
         }
-        .navbar { 
-            background: white; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-            padding: 15px 0;
-        }
+        
         .form-wrapper { 
             background: white; 
             border-radius: 10px; 
