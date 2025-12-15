@@ -256,7 +256,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="container">
             <div class="nav-brand">
                 <a href="index.html" class="logo">
-                    <img src="../png/siptif.png" alt="logo SIPTIF Polibatam" width="40" height="40">
+                    <img src="png/siptif.png" alt="logo SIPTIF Polibatam" width="40" height="40">
                 </a>
                 <h1 class="judul">SIPTIF Polibatam</h1>
             </div>
