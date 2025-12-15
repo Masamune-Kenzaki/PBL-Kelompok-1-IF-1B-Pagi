@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Kunjungan - SIPTIF Polibatam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/style_kunjungan.css">
+    <link rel="stylesheet" href="css/style_kunjungan.css">
     <style>
         /* Inline CSS untuk performa */
         body { 
@@ -261,7 +261,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h1 class="judul">SIPTIF Polibatam</h1>
             </div>
             <ul class="nav-links">
-                <li><a href="../index.html">Beranda</a></li>
+                <li><a href="index.html">Beranda</a></li>
                 <li><a href="kunjungan.php" class="active">Kunjungan</a></li>
             </ul>
         </div>
@@ -597,7 +597,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     });
     </script>
-    <script src="../js/admin.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
 <?php
