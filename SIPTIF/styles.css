@@ -121,23 +121,25 @@ p {
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .nav-links li a {
-    color: #0a06f0;
+    color: #004b9b;
     text-decoration: none;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 600;
-    padding: 5px 10px;
-    border-radius: 4px;
+    padding: 8px 15px;
+    border-radius: 8px;
     transition: all 0.3s ease;
+    position: relative;
+    color: #004b9b;
 }
 
 .nav-links li a:hover,
 .nav-links li a.active {
-    background-color: rgba(10, 6, 240, 0.1);
-    color: #0704c1;
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #02005c;
 }
 
 .nav-toggle {
