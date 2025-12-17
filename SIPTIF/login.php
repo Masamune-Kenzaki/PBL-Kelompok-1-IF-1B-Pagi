@@ -1,50 +1,5 @@
 <?php
 // login.php
-<<<<<<< HEAD
-
-header('Content-Type: application/json');
-// Mengizinkan permintaan dari domain manapun (untuk testing)
-header('Access-Control-Allow-Origin: *'); 
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
-// Hanya proses permintaan POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Method Not Allowed
-    echo json_encode(['message' => 'Metode permintaan tidak diizinkan.']);
-    exit;
-}
-
-// Ambil data JSON dari body permintaan (penting untuk AJAX/Fetch)
-$data = json_decode(file_get_contents('php://input'), true);
-
-$username = $data['username'] ?? '';
-$password = $data['password'] ?? '';
-
-// --- BAGIAN LOGIKA OTENTIKASI (Saat ini: Dummy Check) ---
-if ($username === 'admin' && $password === 'admin123') {
-    // Login Berhasil
-    http_response_code(200);
-    echo json_encode([
-        'message' => 'Login Berhasil!',
-        'status' => 'success',
-        // Token harusnya dihasilkan menggunakan JWT library PHP (misal: firebase/php-jwt)
-        'token' => 'dummy_php_jwt_token_45678'
-    ]);
-} else {
-    // Login Gagal
-    http_response_code(401); // Unauthorized
-    echo json_encode([
-        'message' => 'Username atau Password salah.',
-        'status' => 'error'
-    ]);
-}
-
-// Selesai
-exit;
-
-?>
-=======
 session_start();
 include 'db_config.php';
 
@@ -78,183 +33,254 @@ if (isset($_SESSION['admin_logged_in'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin - SIPTIF Polibatam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #1e293b;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+            /* Background dengan gradasi mesh yang lebih modern */
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        
-        .login-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
             overflow: hidden;
+            position: relative;
         }
-        
+
+        /* Dekorasi Lingkaran Background */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        body::before { top: -100px; right: -50px; }
+        body::after { bottom: -100px; left: -50px; }
+
+        .login-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 420px;
+            padding: 40px;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .login-header {
-            background: #1976D2;
-            color: white;
-            padding: 30px;
             text-align: center;
+            margin-bottom: 35px;
         }
-        
+
+        .login-header .icon-box {
+            background: #eff6ff;
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: var(--primary);
+            font-size: 30px;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+        }
+
         .login-header h1 {
             font-size: 24px;
+            font-weight: 600;
+            color: var(--text-main);
             margin-bottom: 5px;
         }
-        
+
         .login-header p {
             font-size: 14px;
-            opacity: 0.9;
+            color: #64748b;
         }
-        
-        .login-body {
-            padding: 30px;
+
+        .error-message {
+            background: #fef2f2;
+            color: #b91c1c;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #fee2e2;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            font-size: 14px;
             font-weight: 500;
+            color: #475569;
+            margin-bottom: 8px;
         }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: #1976D2;
-            outline: none;
-        }
-        
-        .input-icon {
+
+        .input-wrapper {
             position: relative;
         }
-        
-        .input-icon i {
+
+        .input-wrapper i {
             position: absolute;
-            left: 15px;
+            left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: #666;
+            color: #94a3b8;
+            transition: color 0.3s;
         }
-        
-        .input-icon input {
-            padding-left: 45px;
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px 12px 48px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
+            background: #f8fafc;
         }
-        
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control:focus + i {
+            color: var(--primary);
+        }
+
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: #1976D2;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
-        
+
         .btn-login:hover {
-            background: #1565C0;
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
         }
-        
-        .error-message {
-            background: #ffebee;
-            color: #d32f2f;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 14px;
+
+        .btn-login:active {
+            transform: translateY(0);
         }
-        
+
         .login-footer {
+            margin-top: 30px;
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #666;
-            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
         }
-        
-        @media (max-width: 480px) {
-            .login-container {
-                margin: 20px;
-            }
-            
-            .login-header,
-            .login-body {
-                padding: 20px;
-            }
+
+        .hint-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .hint-badge b {
+            color: var(--primary);
         }
     </style>
 </head>
 <body>
+
     <div class="login-container">
         <div class="login-header">
-            <h1><i class="fas fa-book-reader"></i> SIPTIF Polibatam</h1>
-            <p>Sistem Informasi Perpustakaan</p>
+            <div class="icon-box">
+                <i class="fas fa-book-reader"></i>
+            </div>
+            <h1>SIPTIF Polibatam</h1>
+            <p>Buku Tamu & Administrasi Digital</p>
         </div>
-        
+
         <div class="login-body">
-            <?php if ($error): ?>
+            <?php if (isset($error) && $error): ?>
             <div class="error-message">
-                <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+                <i class="fas fa-circle-exclamation"></i>
+                <span><?php echo $error; ?></span>
             </div>
             <?php endif; ?>
-            
+
             <form method="POST" action="">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <div class="input-icon">
-                        <i class="fas fa-user"></i>
+                    <div class="input-wrapper">
                         <input type="text" id="username" name="username" class="form-control" 
-                               placeholder="Masukkan username" required>
+                               placeholder="Masukkan username" required autocomplete="off">
+                        <i class="fas fa-user"></i>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-icon">
-                        <i class="fas fa-lock"></i>
+                    <div class="input-wrapper">
                         <input type="password" id="password" name="password" class="form-control" 
                                placeholder="Masukkan password" required>
+                        <i class="fas fa-lock"></i>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Login
+                    Login 
+                    <i class="fas fa-arrow-right-long"></i>
                 </button>
             </form>
-            
+
             <div class="login-footer">
-                <p>Default login: admin / admin123</p>
+                <div class="hint-badge">
+                    Default login: <b>admin</b> / <b>admin123</b>
+                </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>
->>>>>>> d140e7377c4ed4606674db5c28a87bfb9f0eecd6
