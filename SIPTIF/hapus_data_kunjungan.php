@@ -1,21 +1,23 @@
 <?php
+// hapus_data_kunjungan.php
 include 'db_config.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-$result = mysqli_query($conn, "DELETE FROM data_kunjungan WHERE id='$id'");
+    $result = mysqli_query($conn, "DELETE FROM data_kunjungan WHERE id='$id'");
 
-if ($result) {
-    echo "<script>
-    alert('Data berhasil dihapus');
-    window.location.href = 'data_kunjungan.html';
-    </script>";
+    if ($result) {
+        // Redirect ke data_kunjungan.php dengan parameter delete_success
+        header('Location: data_kunjungan.php?delete_success=1');
+        exit();
+    } else {
+        header('Location: data_kunjungan.php?delete_error=1');
+        exit();
+    }
 } else {
-    echo "<script>
-    alert('Gagal menghapus data');
-    window.location.href = 'data_kunjungan.html';
-    </script>";
-}
+    // Jika tidak ada ID, redirect ke data kunjungan
+    header('Location: data_kunjungan.php');
+    exit();
 }
 ?>

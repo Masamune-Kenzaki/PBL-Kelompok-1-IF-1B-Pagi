@@ -33,7 +33,7 @@ body {
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(to bottom, var(--light-blue), #f1fafe);
+    background: linear-gradient(to bottom, #a9def9, #f1fafe);
     padding: 0.5rem 0;
     color: white;
     position: fixed;
