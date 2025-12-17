@@ -199,20 +199,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         /* Tombol */
         .form-actions {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             margin-top: 25px;
         }
 
         .btn-submit,
         .btn-reset {
-            flex: 1;
-            padding: 14px 20px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            border:none;
             cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         /* Tombol Simpan */
@@ -222,28 +223,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.35);
         }
 
-        .btn-submit:hover {
-            background: linear-gradient(135deg, #2980b9, #1f6fb2);
+        .btn-submit:not(:disabled):hover {
+            background-color: #0056b3;
             transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-submit:not(:disabled):active {
+            background-color: #004085;
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1)
         }
 
         /* Tombol Reset */
         .btn-reset {
-            background: #e3f2fd;
-            color: #1565c0;
-            border: 2px solid #3498db;
+            background: #6c757d;
+            color: white;
         }
 
         .btn-reset:hover {
-            background: #3498db;
-            color: #fff;
+            background-color: #5a6268;
             transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-reset:active {
+            background-color: #495057;
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
         }
 
         /* Disabled / loading */
         .btn-submit:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links li a {
+            color: #004b9b;
+            text-decoration: none;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: #004b9b;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #02005c;
         }
     </style>
 </head>
@@ -297,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <option value="Meminjam Ruangan">Meminjam Ruangan</option>
                             <option value="Menemui Wali Dosen">Menemui Wali Dosen</option>
                             <option value="Meminjam Kunci Ruangan">Meminjam Kunci Ruangan</option>
-                            <option value="Meminjam Alat">Meminjam Alat</option>
+                            <option value="Pembuatan Surat Keperluan Magang">Pembuatan Surat Keperluan Magang</option>
                             <option value="Menemui Staff TU">Menemui Staff TU</option>
                             <option value="Lainnya">Lainnya</option>
                         </select>
@@ -317,7 +356,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <button type="submit" class="btn-submit">
                             <span class="btn-text">Simpan Data</span>
                         </button>
-                        <button type="reset" class="btn-reset">Reset Form</button>
+                        <button type="reset" class="btn-reset">Atur Ulang formulir</button>
                     </div>
                 </form>
             </div>
@@ -353,16 +392,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>SIPTIF Polibatam</h3>
-                    <p>Perpustakaan digital Politeknik Negeri Batam</p>
+                    <p>SIPTIF (Sistem Informasi Pelayanan & Fasilitas Jurusan Teknik Informatika) Politeknik Negeri Batam adalah sebuah inisiatif digital yang bertujuan untuk
+                        pencatatan data tamu atau pengunjung Jurusan Teknik Informatika.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3>Tautan Cepat</h3>  
+                    <ul>
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="kunjungan.php">Kunjungan</a></li>
+                        <li><a href="kontak.html">Kontak</a></li>
+                    </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Kontak Kami</h3>
                     <p><i class="fas fa-map-marker-alt"></i> Jl. Ahmad Yani, Batam Center, Batam</p>
                     <p><i class="fas fa-phone"></i> (0778) 469858</p>
+                    <p><i class="fas fa-envelope"></i> SIPTIF@polibatam.ac.id</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Ikuti Kami</h3>
+                    <ul class="social-links">
+                        <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 SIPTIF Polibatam. All rights reserved.</p>
+                <p>&copy; 2025 SIPTIF Polibatam. All rights reserved.</p>
             </div>
         </div>
     </footer>
