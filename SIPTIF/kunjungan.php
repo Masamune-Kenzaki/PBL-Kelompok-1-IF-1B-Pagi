@@ -311,12 +311,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form class="simple-form" id="kunjunganForm">
                     <div class="input-group">
                         <label for="nama">Nama Lengkap *</label>
-                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required>
+                        <input type="text" id="nama" name="nama" placeholder="Masukkan Nama Lengkap" required>
                     </div>
                     
                     <div class="input-group">
                         <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="contoh@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="Contoh@email.com" required>
                     </div>
                     
                     <div class="input-group">
