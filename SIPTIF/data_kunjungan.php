@@ -11,6 +11,16 @@ if (!isset($_SESSION['admin_logged_in'])) {
 // Filter parameters dari URL
 $filter_tanggal = isset($_GET['tanggal']) ? $_GET['tanggal'] : '';
 $filter_keperluan = isset($_GET['keperluan']) ? $_GET['keperluan'] : '';
+$filter_lainnya = isset($_GET['lainnya']) ? $_GET['lainnya'] : '';
+
+// Daftar keperluan yang ada di dropdown
+$dropdown_keperluan = [
+    'Meminjam Ruangan',
+    'Menemui Wali Dosen', 
+    'Meminjam Alat',
+    'Menemui Staff TU',
+    'Meminjam Kunci Ruangan'
+];
 
 // Bangun query berdasarkan filter
 $sql = "SELECT * FROM data_kunjungan WHERE 1=1";
@@ -21,7 +31,24 @@ if (!empty($filter_tanggal)) {
 }
 
 if (!empty($filter_keperluan)) {
-    $conditions[] = "keperluan = '" . mysqli_real_escape_string($conn, $filter_keperluan) . "'";
+    if ($filter_keperluan === 'Lainnya') {
+        // Filter untuk keperluan selain yang ada di dropdown
+        $escaped_keperluan = array_map(function($item) use ($conn) {
+            return "'" . mysqli_real_escape_string($conn, $item) . "'";
+        }, $dropdown_keperluan);
+        
+        $conditions[] = "keperluan NOT IN (" . implode(",", $escaped_keperluan) . ")";
+    } else {
+        $conditions[] = "keperluan = '" . mysqli_real_escape_string($conn, $filter_keperluan) . "'";
+    }
+}
+
+if (!empty($filter_lainnya)) {
+    // Filter untuk mencari teks spesifik di keperluan lainnya
+    $conditions[] = "keperluan LIKE '%" . mysqli_real_escape_string($conn, $filter_lainnya) . "%'";
+    $conditions[] = "keperluan NOT IN (" . implode(",", array_map(function($item) use ($conn) {
+        return "'" . mysqli_real_escape_string($conn, $item) . "'";
+    }, $dropdown_keperluan)) . ")";
 }
 
 if (!empty($conditions)) {
@@ -61,6 +88,20 @@ if (isset($_GET['delete_success'])) {
 
 if (isset($_GET['delete_error'])) {
     $error_message = 'Gagal menghapus data.';
+}
+
+// Ambil daftar keperluan unik dari database untuk statistik
+$sql_unique_keperluan = "SELECT DISTINCT keperluan, COUNT(*) as count FROM data_kunjungan 
+                         WHERE keperluan NOT IN ('" . implode("','", array_map(function($item) use ($conn) {
+                             return mysqli_real_escape_string($conn, $item);
+                         }, $dropdown_keperluan)) . "')
+                         GROUP BY keperluan 
+                         ORDER BY count DESC 
+                         LIMIT 10";
+$result_unique_keperluan = mysqli_query($conn, $sql_unique_keperluan);
+$keperluan_lainnya_list = [];
+while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
+    $keperluan_lainnya_list[] = $row;
 }
 ?>
 <!DOCTYPE html>
@@ -280,6 +321,7 @@ if (isset($_GET['delete_error'])) {
                 max-width: none;
             }
         }
+        
         /* Hamburger default (desktop) */
         .hamburger {
             display: block !important;
@@ -320,9 +362,10 @@ if (isset($_GET['delete_error'])) {
             }
 
             .nav-item {
-            margin: 16px 0;
+                margin: 16px 0;
             }
         }
+        
         /* Nav */
         .nav-menu {
             display: flex;
@@ -351,6 +394,65 @@ if (isset($_GET['delete_error'])) {
             .nav-menu.active {
                 left: 0 !important;
             }
+        }
+        
+        /* Filter lainnya section */
+        .filter-lainnya-container {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .filter-lainnya-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lainnya-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .lainnya-input-group input {
+            flex: 1;
+        }
+        
+        .lainnya-quick-filters {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .lainnya-quick-filter {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .lainnya-quick-filter:hover {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+        
+        .lainnya-quick-filter.active {
+            background: #1976d2;
+            color: white;
+            border-color: #1976d2;
         }
     </style>
 </head>
@@ -427,7 +529,7 @@ if (isset($_GET['delete_error'])) {
     </div>
     
     <!-- Tampilkan filter yang aktif -->
-    <?php if (!empty($filter_tanggal) || !empty($filter_keperluan)): ?>
+    <?php if (!empty($filter_tanggal) || !empty($filter_keperluan) || !empty($filter_lainnya)): ?>
     <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
         <?php if (!empty($filter_tanggal)): ?>
         <div class="filter-badge">
@@ -444,6 +546,16 @@ if (isset($_GET['delete_error'])) {
             <i class="fas fa-filter"></i>
             <span>Keperluan: <?php echo htmlspecialchars($filter_keperluan); ?></span>
             <button class="remove-filter" onclick="removeFilter('keperluan')" title="Hapus filter keperluan">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <?php endif; ?>
+        
+        <?php if (!empty($filter_lainnya)): ?>
+        <div class="filter-badge">
+            <i class="fas fa-search"></i>
+            <span>Lainnya: "<?php echo htmlspecialchars($filter_lainnya); ?>"</span>
+            <button class="remove-filter" onclick="removeFilter('lainnya')" title="Hapus filter lainnya">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -466,7 +578,6 @@ if (isset($_GET['delete_error'])) {
                 <label for="filterKeperluan">
                     <i class="fas fa-filter"></i> Filter Keperluan:
                 </label>
-                <!-- Di dalam filter section, ubah opsi keperluan -->
                 <select id="filterKeperluan" class="filter-input">
                     <option value="">Semua Keperluan</option>
                     <option value="Meminjam Ruangan" <?php echo $filter_keperluan == 'Meminjam Ruangan' ? 'selected' : ''; ?>>Meminjam Ruangan</option>
@@ -474,7 +585,7 @@ if (isset($_GET['delete_error'])) {
                     <option value="Meminjam Alat" <?php echo $filter_keperluan == 'Meminjam Alat' ? 'selected' : ''; ?>>Meminjam Alat</option>
                     <option value="Menemui Staff TU" <?php echo $filter_keperluan == 'Menemui Staff TU' ? 'selected' : ''; ?>>Menemui Staff TU</option>
                     <option value="Meminjam Kunci Ruangan" <?php echo $filter_keperluan == 'Meminjam Kunci Ruangan' ? 'selected' : ''; ?>>Meminjam Kunci Ruangan</option>
-                    <option value="Lainnya" <?php echo $filter_keperluan == 'Lainnya' ? 'selected' : ''; ?>>Lainnya</option>
+                    <option value="Lainnya" <?php echo ($filter_keperluan == 'Lainnya' || !empty($filter_lainnya)) ? 'selected' : ''; ?>>Lainnya (di luar pilihan)</option>
                 </select>
             </div>
             <div style="display: flex; gap: 10px; align-items: flex-end;">
@@ -488,6 +599,47 @@ if (isset($_GET['delete_error'])) {
                     <i class="fas fa-plus"></i> Tambah Data
                 </a>
             </div>
+        </div>
+
+        <!-- Filter Lainnya Section -->
+        <div class="filter-lainnya-container" id="filterLainnyaContainer">
+            <div style="margin-bottom: 10px;">
+                <label style="font-weight: 600; color: #495057;">
+                    <i class="fas fa-search"></i> Cari keperluan lainnya:
+                </label>
+                <p style="font-size: 0.85rem; color: #6c757d; margin-top: 5px;">
+                    Masukkan kata kunci untuk mencari keperluan yang tidak ada di dropdown di atas
+                </p>
+            </div>
+            
+            <div class="lainnya-input-group">
+                <input type="text" 
+                       id="filterLainnya" 
+                       class="filter-input" 
+                       placeholder="Contoh: konsultasi, izin, dll..."
+                       value="<?php echo !empty($filter_lainnya) ? htmlspecialchars($filter_lainnya) : ''; ?>">
+                <button type="button" id="btnCariLainnya" class="btn-primary">
+                    <i class="fas fa-search"></i> Cari
+                </button>
+            </div>
+            
+            <?php if (!empty($keperluan_lainnya_list)): ?>
+            <div class="lainnya-quick-filters">
+                <div style="width: 100%; font-size: 0.85rem; color: #6c757d; margin-bottom: 8px;">
+                    <i class="fas fa-bolt"></i> Filter cepat (berdasarkan data):
+                </div>
+                <?php foreach ($keperluan_lainnya_list as $keperluan): ?>
+                <button type="button" 
+                        class="lainnya-quick-filter <?php echo ($filter_lainnya == $keperluan['keperluan']) ? 'active' : ''; ?>"
+                        data-keperluan="<?php echo htmlspecialchars($keperluan['keperluan']); ?>">
+                    <?php echo htmlspecialchars($keperluan['keperluan']); ?>
+                    <span style="background: #e9ecef; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem; margin-left: 4px;">
+                        <?php echo $keperluan['count']; ?>
+                    </span>
+                </button>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
         </div>
 
         <!-- Data Table -->
@@ -509,7 +661,10 @@ if (isset($_GET['delete_error'])) {
                 <tbody>
                     <?php if (mysqli_num_rows($result) > 0): ?>
                         <?php $no = 1; ?>
-                        <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                        <?php while ($row = mysqli_fetch_assoc($result)): 
+                            // Cek apakah keperluan termasuk "lainnya"
+                            $is_lainnya = !in_array($row['keperluan'], $dropdown_keperluan);
+                        ?>
                         <tr>
                             <td><?php echo $no++; ?></td>
                             <td><strong><?php echo htmlspecialchars($row['nama']); ?></strong></td>
@@ -524,7 +679,14 @@ if (isset($_GET['delete_error'])) {
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <span class="keperluan-badge"><?php echo htmlspecialchars($row['keperluan']); ?></span>
+                                <span class="keperluan-badge <?php echo $is_lainnya ? 'lainnya-badge' : ''; ?>">
+                                    <?php echo htmlspecialchars($row['keperluan']); ?>
+                                    <?php if ($is_lainnya): ?>
+                                        <span style="font-size: 0.7rem; color: #dc3545; margin-left: 5px;">
+                                            <i class="fas fa-exclamation-circle"></i> Lainnya
+                                        </span>
+                                    <?php endif; ?>
+                                </span>
                             </td>
                             <td>
                                 <?php if ($row['keluar']): ?>
@@ -555,7 +717,7 @@ if (isset($_GET['delete_error'])) {
                         <tr>
                             <td colspan="9">
                                 <div class="empty-state">
-                                    <?php if (!empty($filter_tanggal) || !empty($filter_keperluan)): ?>
+                                    <?php if (!empty($filter_tanggal) || !empty($filter_keperluan) || !empty($filter_lainnya)): ?>
                                         <i class="fas fa-search"></i>
                                         <h3>Data tidak ditemukan</h3>
                                         <p>Tidak ada data yang sesuai dengan filter yang diterapkan</p>
@@ -599,10 +761,12 @@ if (isset($_GET['delete_error'])) {
             <?php
             // Build export URL dengan parameter filter
             $export_params = '';
-            if (!empty($filter_tanggal) || !empty($filter_keperluan)) {
-                $params = [];
-                if (!empty($filter_tanggal)) $params[] = 'tanggal=' . urlencode($filter_tanggal);
-                if (!empty($filter_keperluan)) $params[] = 'keperluan=' . urlencode($filter_keperluan);
+            $params = [];
+            if (!empty($filter_tanggal)) $params[] = 'tanggal=' . urlencode($filter_tanggal);
+            if (!empty($filter_keperluan)) $params[] = 'keperluan=' . urlencode($filter_keperluan);
+            if (!empty($filter_lainnya)) $params[] = 'lainnya=' . urlencode($filter_lainnya);
+            
+            if (!empty($params)) {
                 $export_params = '?' . implode('&', $params);
             }
             ?>
@@ -677,7 +841,6 @@ if (isset($_GET['delete_error'])) {
                         <label for="edit-keperluan" class="form-label">
                             <i class="fas fa-tasks"></i> Keperluan
                         </label>
-                        <!-- Di dalam modal edit, ubah opsi keperluan -->
                         <select class="form-control" id="edit-keperluan" name="keperluan" required onchange="toggleEditOtherInput()">
                             <option value="">Pilih keperluan</option>
                             <option value="Meminjam Ruangan">Meminjam Ruangan</option>
@@ -773,6 +936,26 @@ function toggleEditOtherInput() {
     }
 }
 
+// Toggle filter lainnya section
+const filterKeperluan = document.getElementById('filterKeperluan');
+const filterLainnyaContainer = document.getElementById('filterLainnyaContainer');
+
+function toggleFilterLainnya() {
+    if (filterKeperluan.value === 'Lainnya') {
+        filterLainnyaContainer.classList.add('active');
+        document.getElementById('filterLainnya').focus();
+    } else {
+        filterLainnyaContainer.classList.remove('active');
+        document.getElementById('filterLainnya').value = '';
+    }
+}
+
+// Inisialisasi tampilan filter lainnya
+toggleFilterLainnya();
+
+// Event listener untuk perubahan filter keperluan
+filterKeperluan.addEventListener('change', toggleFilterLainnya);
+
 // Fungsi edit data
 function editData(id) {
     const row = event.target.closest('tr');
@@ -793,30 +976,33 @@ function editData(id) {
         keluarElement.textContent.trim() : '';
     
     // Ambil keperluan dari badge
-    const keperluanText = cells[6].querySelector('.keperluan-badge').textContent.trim();
+    const keperluanText = cells[6].querySelector('.keperluan-badge').textContent.trim().replace(' Lainnya', '');
     const keperluanSelect = document.getElementById('edit-keperluan');
     const otherInputContainer = document.getElementById('edit-other-input-container');
     const otherInput = document.getElementById('edit-keperluan-lainnya');
     
+    // Daftar keperluan yang ada di dropdown
+    const dropdownOptions = [
+        'Meminjam Ruangan', 
+        'Menemui Wali Dosen', 
+        'Meminjam Alat', 
+        'Menemui Staff TU', 
+        'Meminjam Kunci Ruangan'
+    ];
+    
     // Cek apakah keperluan ada di dropdown
-    let foundInDropdown = false;
-    const options = ['Meminjam Ruangan', 'Mengunjungi Perpustakaan', 'Meminjam Alat', 'Meminjam Buku', 'Meminjam Kunci Ruangan'];
+    let foundInDropdown = dropdownOptions.includes(keperluanText);
     
-    if (options.includes(keperluanText)) {
+    if (foundInDropdown) {
         keperluanSelect.value = keperluanText;
-        foundInDropdown = true;
-    }
-    
-    // Jika tidak ditemukan di dropdown, set ke "Lainnya"
-    if (!foundInDropdown && keperluanText) {
+        otherInputContainer.style.display = 'none';
+        otherInput.value = '';
+        otherInput.required = false;
+    } else {
         keperluanSelect.value = 'Lainnya';
         otherInputContainer.style.display = 'block';
         otherInput.value = keperluanText;
         otherInput.required = true;
-    } else {
-        otherInputContainer.style.display = 'none';
-        otherInput.value = '';
-        otherInput.required = false;
     }
     
     // Tampilkan modal
@@ -833,16 +1019,46 @@ function hapusData(id) {
 
 // Filter data
 document.getElementById('btnFilter').addEventListener('click', function() {
+    applyFilter();
+});
+
+// Cari data lainnya
+document.getElementById('btnCariLainnya').addEventListener('click', function() {
+    applyFilter();
+});
+
+// Enter key untuk filter lainnya
+document.getElementById('filterLainnya').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        applyFilter();
+    }
+});
+
+// Fungsi apply filter
+function applyFilter() {
     const tanggal = document.getElementById('filterTanggal').value;
     const keperluan = document.getElementById('filterKeperluan').value;
+    const lainnya = document.getElementById('filterLainnya').value;
     
     // Build URL parameters
     let params = new URLSearchParams();
     if (tanggal) params.append('tanggal', tanggal);
     if (keperluan) params.append('keperluan', keperluan);
+    if (lainnya) params.append('lainnya', lainnya);
     
     // Reload page dengan filter
     window.location.href = 'data_kunjungan.php?' + params.toString();
+}
+
+// Quick filter untuk keperluan lainnya
+document.querySelectorAll('.lainnya-quick-filter').forEach(button => {
+    button.addEventListener('click', function() {
+        const keperluan = this.getAttribute('data-keperluan');
+        document.getElementById('filterKeperluan').value = 'Lainnya';
+        document.getElementById('filterLainnya').value = keperluan;
+        toggleFilterLainnya();
+        applyFilter();
+    });
 });
 
 // Hapus filter individual
