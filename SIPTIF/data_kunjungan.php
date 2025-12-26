@@ -650,6 +650,7 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
                         <th>No</th>
                         <th>Nama</th>
                         <th>Email</th>
+                        <th>Instansi</th>
                         <th>Tanggal</th>
                         <th>Jam Masuk</th>
                         <th>Jam Keluar</th>
@@ -669,6 +670,7 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
                             <td><?php echo $no++; ?></td>
                             <td><strong><?php echo htmlspecialchars($row['nama']); ?></strong></td>
                             <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['instansi']); ?></td>
                             <td><?php echo date('d/m/Y', strtotime($row['tanggal'])); ?></td>
                             <td><span class="time-badge"><?php echo $row['masuk']; ?></span></td>
                             <td>
@@ -813,6 +815,13 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
                             <i class="fas fa-envelope"></i> Email
                         </label>
                         <input type="email" class="form-control" id="edit-email" name="email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit-instansi" class="form-label">
+                            <i class="fa-solid fa-school"></i> Instansi
+                        </label>
+                        <input type="text" class="form-control" id="edit-instansi" name="instansi" required>
                     </div>
                     
                     <div class="mb-3">
@@ -964,19 +973,20 @@ function editData(id) {
     document.getElementById('edit-id').value = id;
     document.getElementById('edit-nama').value = cells[1].querySelector('strong').textContent.trim();
     document.getElementById('edit-email').value = cells[2].textContent.trim();
+    document.getElementById('edit-instansi').value = cells[3].textContent.trim();
     
-    const tanggalText = cells[3].textContent.trim();
+    const tanggalText = cells[4].textContent.trim();
     const [day, month, year] = tanggalText.split('/');
     document.getElementById('edit-tanggal').value = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     
-    document.getElementById('edit-masuk').value = cells[4].querySelector('.time-badge').textContent.trim();
+    document.getElementById('edit-masuk').value = cells[5].querySelector('.time-badge').textContent.trim();
     
-    const keluarElement = cells[5].querySelector('.time-badge');
+    const keluarElement = cells[6].querySelector('.time-badge');
     document.getElementById('edit-keluar').value = keluarElement.textContent.trim() !== '-' ? 
         keluarElement.textContent.trim() : '';
     
     // Ambil keperluan dari badge
-    const keperluanText = cells[6].querySelector('.keperluan-badge').textContent.trim().replace(' Lainnya', '');
+    const keperluanText = cells[7].querySelector('.keperluan-badge').textContent.trim().replace(' Lainnya', '');
     const keperluanSelect = document.getElementById('edit-keperluan');
     const otherInputContainer = document.getElementById('edit-other-input-container');
     const otherInput = document.getElementById('edit-keperluan-lainnya');
