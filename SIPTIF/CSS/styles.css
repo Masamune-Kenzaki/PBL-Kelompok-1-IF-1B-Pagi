@@ -165,10 +165,10 @@ p {
 
 /* Home Section */
 .home-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://lib.polibatam.ac.id/wp-content/uploads/2022/11/4-1024x768.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://www.polibatam.ac.id/wp-content/uploads/2024/10/Ruang-PPID-3-1024x683.jpg');
     background-size: cover;
     background-position: center;
-    height: 80vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     color: white;
