@@ -6,6 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $instansi = mysqli_real_escape_string($conn, $_POST['instansi']);
     $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
     $masuk = mysqli_real_escape_string($conn, $_POST['masuk']);
     $keluar = $_POST['keluar'] ? mysqli_real_escape_string($conn, $_POST['keluar']) : NULL;
@@ -18,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $result = mysqli_query($conn, "UPDATE data_kunjungan SET 
         nama='$nama', 
-        email='$email', 
+        email='$email',
+        instansi='$instansi', 
         tanggal='$tanggal', 
         masuk='$masuk',
         keluar=" . ($keluar ? "'$keluar'" : "NULL") . ", 
