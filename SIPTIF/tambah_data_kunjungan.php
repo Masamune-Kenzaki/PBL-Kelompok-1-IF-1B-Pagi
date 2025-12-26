@@ -14,6 +14,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $instansi = mysqli_real_escape_string($conn, $_POST['instansi']);
     $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
     $masuk = mysqli_real_escape_string($conn, $_POST['masuk']);
     $keluar = mysqli_real_escape_string($conn, $_POST['keluar']);
@@ -24,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $keperluan = mysqli_real_escape_string($conn, $_POST['keperluan_lainnya']);
     }
     
-    $sql = "INSERT INTO data_kunjungan (nama, email, tanggal, masuk, keluar, keperluan) 
-            VALUES ('$nama', '$email', '$tanggal', '$masuk', '$keluar', '$keperluan')";
+    $sql = "INSERT INTO data_kunjungan (nama, email, instansi, tanggal, masuk, keluar, keperluan) 
+            VALUES ('$nama', '$email', '$instansi', '$tanggal', '$masuk', '$keluar', '$keperluan')";
     
     if (mysqli_query($conn, $sql)) {
         echo "<script>
@@ -220,6 +221,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </label>
                     <input type="email" id="email" name="email" class="form-control" 
                            placeholder="contoh@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="instansi">
+                        <i class="fas fa-user"></i> Instansi
+                    </label>
+                    <input type="text" id="instansi" name="instansi" class="form-control" 
+                           placeholder="Masukkan Instansi" required>
                 </div>
                 
                 <div class="form-group">
