@@ -593,7 +593,7 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
                     <i class="fas fa-search"></i> Filter
                 </button>
                 <button id="btnReset" class="btn-secondary">
-                    <i class="fas fa-redo"></i> Reset
+                    <i class="fas fa-redo"></i> Atur Ulang
                 </button>
                 <a href="tambah_data_kunjungan.php" class="btn btn-success" style="padding: 10px 20px; text-decoration: none;">
                     <i class="fas fa-plus"></i> Tambah Data
@@ -723,7 +723,7 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
                                         <p>Tidak ada data yang sesuai dengan filter yang diterapkan</p>
                                         <button onclick="window.location.href='data_kunjungan.php'" class="btn-primary" 
                                                style="text-decoration: none; display: inline-block; padding: 12px 24px; border: none; cursor: pointer;">
-                                            <i class="fas fa-redo"></i> Reset Filter
+                                            <i class="fas fa-redo"></i> Atur Ulang Filter
                                         </button>
                                     <?php else: ?>
                                         <i class="fas fa-inbox"></i>
@@ -771,13 +771,13 @@ while ($row = mysqli_fetch_assoc($result_unique_keperluan)) {
             }
             ?>
             <button class="btn-export" onclick="window.location.href='export_excel.php<?php echo $export_params; ?>'">
-                <i class="fas fa-file-excel"></i> Export Excel
+                <i class="fas fa-file-excel"></i> Ekspor Excel
             </button>
             <button class="btn-export" onclick="window.print()">
                 <i class="fas fa-print"></i> Cetak
             </button>
             <button class="btn-export" onclick="refreshData()">
-                <i class="fas fa-sync-alt"></i> Refresh Data
+                <i class="fas fa-sync-alt"></i> Perbarui Data
             </button>
             <a href="tambah_data_kunjungan.php" class="btn-export" style="text-decoration: none;">
                 <i class="fas fa-plus-circle"></i> Tambah Data
