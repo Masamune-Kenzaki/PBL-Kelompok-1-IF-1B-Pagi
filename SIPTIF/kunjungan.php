@@ -9,6 +9,7 @@ $error = false;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama = mysqli_real_escape_string($conn, $_POST['nama']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $instansi = mysqli_real_escape_string($conn, $_POST['instansi']);
     $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
     $masuk = mysqli_real_escape_string($conn, $_POST['waktu']);
     $keperluan = mysqli_real_escape_string($conn, $_POST['keperluan']);
@@ -19,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Simpan ke database
-    $sql = "INSERT INTO data_kunjungan (nama, email, tanggal, masuk, keperluan, created_at) 
-            VALUES ('$nama', '$email', '$tanggal', '$masuk', '$keperluan', NOW())";
+    $sql = "INSERT INTO data_kunjungan (nama, email, instansi, tanggal, masuk, keperluan, created_at) 
+            VALUES ('$nama', '$email', '$instansi', '$tanggal', '$masuk', '$keperluan', NOW())";
     
     if (mysqli_query($conn, $sql)) {
         $success = true;
@@ -320,6 +321,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <div class="input-group">
+                        <label for="instansi">Instansi *</label>
+                        <input type="text" id="instansi" name="instansi" placeholder="Masukkan Instansi" required>
+                    </div>
+
+                    <div class="input-group">
                         <label for="tanggal">Tanggal Kunjungan *</label>
                         <input type="date" id="tanggal" name="tanggal" required>
                     </div>
@@ -491,6 +497,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 alert('❌ Email tidak valid');
+                return false;
+            }
+
+            // Validasi instansi
+            const nama = document.getElementById('instansi').value.trim();
+            if (instansi.length < 2) {
+                alert('❌ Nama minimal 2 karakter');
                 return false;
             }
             
