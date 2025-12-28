@@ -20,13 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Simpan ke database
-    $sql = "INSERT INTO data_kunjungan (nama, email, instansi, tanggal, masuk, keperluan, created_at) 
-            VALUES ('$nama', '$email', '$instansi', '$tanggal', '$masuk', '$keperluan', NOW())";
+    $sql = "INSERT INTO data_kunjungan (nama, email, instansi, tanggal, masuk, keperluan) 
+            VALUES ('$nama', '$email', '$instansi', '$tanggal', '$masuk', '$keperluan')";
     
     if (mysqli_query($conn, $sql)) {
         $success = true;
     } else {
         $error = true;
+        // Debug: uncomment untuk melihat error
+        // echo "Error: " . mysqli_error($conn);
     }
 }
 ?>
@@ -309,7 +311,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <h2>Form Kunjungan SIPTIF</h2>
                 <p class="form-description">Isi data diri Anda untuk mengunjungi Tata Usaha</p>
                 
-                <form class="simple-form" id="kunjunganForm">
+                <form class="simple-form" id="kunjunganForm" method="POST" action="">
                     <div class="input-group">
                         <label for="nama">Nama Lengkap *</label>
                         <input type="text" id="nama" name="nama" placeholder="Masukkan Nama Lengkap" required>
@@ -501,9 +503,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Validasi instansi
-            const nama = document.getElementById('instansi').value.trim();
+            const instansi = document.getElementById('instansi').value.trim();
             if (instansi.length < 2) {
-                alert('❌ Nama minimal 2 karakter');
+                alert('❌ Instansi minimal 2 karakter');
                 return false;
             }
             
@@ -541,9 +543,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Auto hide setelah 3 detik
             setTimeout(() => {
                 hidePopup();
-                // Redirect ke halaman sukses setelah popup hilang
+                // Redirect ke halaman yang sama untuk reset form
                 setTimeout(() => {
-                    window.location.href = 'kunjungan.php?success=true';
+                    window.location.href = 'kunjungan.php';
                 }, 500);
             }, 3000);
         }
@@ -565,52 +567,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         // Form submission handler
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!validateForm()) return;
+        form.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
             
             // Set loading state
             submitBtn.classList.add('btn-loading');
             submitBtn.disabled = true;
             
-            // Prepare form data
-            const formData = new FormData(form);
-            
-            try {
-                // Kirim form menggunakan AJAX
-                const response = await fetch('kunjungan.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.text();
-                
-                // Check if success
-                if (response.ok) {
-                    // Reset form
-                    form.reset();
-                    setupDefaults();
-                    toggleOtherInput();
-                    
-                    // Show success popup
-                    showPopup('Data Tersimpan!', 'Data kunjungan Anda telah berhasil disimpan ke sistem.');
-                    
-                    // Reset form defaults setelah popup
-                    setTimeout(() => {
-                        setupDefaults();
-                    }, 3500);
-                } else {
-                    throw new Error('Server error');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showError('Gagal menyimpan data. Silakan coba lagi.');
-            } finally {
-                // Reset button state
-                submitBtn.classList.remove('btn-loading');
-                submitBtn.disabled = false;
-            }
+            // Form akan disubmit secara normal (tidak perlu AJAX)
+            return true;
         });
         
         // Event listeners
@@ -654,16 +622,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Initialize
         setupDefaults();
         toggleOtherInput();
-        
-        // Check URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('success')) {
-            showPopup('Data Tersimpan!', 'Data kunjungan Anda telah berhasil disimpan ke sistem.');
-            // Clean URL
-            setTimeout(() => {
-                window.history.replaceState({}, document.title, 'kunjungan.php');
-            }, 1000);
-        }
     });
     </script>
     <script src="js/admin.js"></script>
